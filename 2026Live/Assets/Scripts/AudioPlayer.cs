@@ -1,18 +1,19 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class AudioPlayer : MonoBehaviour
 {
-    [SerializeField] private AudioCollection myAudioCollection;
-    [SerializeField, Min(0)] private int audioIndex;
-    [SerializeField] private bool playOnStart = true;
+    public AudioCollection myAudioCollection;
 
-    public int AudioIndex
-    {
-        get => audioIndex;
-        set => audioIndex = Mathf.Max(0, value);
-    }
+    [SerializeField, FormerlySerializedAs("currentIndex")]
+    private int audioIndex;
 
-    public AudioCollection MyAudioCollection => myAudioCollection;
+    [SerializeField]
+    private bool playOnStart = true;
+
+    public int AudioIndex => audioIndex;
+
+    public bool PlayOnStart => playOnStart;
 
     private void Start()
     {
@@ -22,9 +23,29 @@ public class AudioPlayer : MonoBehaviour
         }
     }
 
+    public void Play()
+    {
+        PlaySelected();
+    }
+
+    public void Pause()
+    {
+        PauseMusic();
+    }
+
+    public void Resume()
+    {
+        ResumeMusic();
+    }
+
+    public void Stop()
+    {
+        StopMusic();
+    }
+
     public void PlaySelected()
     {
-        if (!TryGetSelectedClip(out var clip))
+        if (!TryGetSelectedClip(out var clip) || AudioManager.Instance == null)
         {
             return;
         }
@@ -32,17 +53,10 @@ public class AudioPlayer : MonoBehaviour
         AudioManager.Instance.PlaySound(clip);
     }
 
-    public void PlayFromIndex(int index)
-    {
-        AudioIndex = index;
-        PlaySelected();
-    }
-
     public void PauseMusic()
     {
         if (AudioManager.Instance == null)
         {
-            Debug.LogWarning("AudioPlayer: AudioManager.Instance nao encontrado.", this);
             return;
         }
 
@@ -53,7 +67,6 @@ public class AudioPlayer : MonoBehaviour
     {
         if (AudioManager.Instance == null)
         {
-            Debug.LogWarning("AudioPlayer: AudioManager.Instance nao encontrado.", this);
             return;
         }
 
@@ -64,35 +77,55 @@ public class AudioPlayer : MonoBehaviour
     {
         if (AudioManager.Instance == null)
         {
-            Debug.LogWarning("AudioPlayer: AudioManager.Instance nao encontrado.", this);
             return;
         }
 
         AudioManager.Instance.StopSound();
     }
 
+    public void SetIndex(int index)
+    {
+        if (myAudioCollection == null || myAudioCollection.Count <= 0)
+        {
+            audioIndex = 0;
+            return;
+        }
+
+        audioIndex = Mathf.Clamp(index, 0, myAudioCollection.Count - 1);
+    }
+
+    public void PlayNext()
+    {
+        if (myAudioCollection == null || myAudioCollection.Count <= 0)
+        {
+            return;
+        }
+
+        audioIndex = (audioIndex + 1) % myAudioCollection.Count;
+        PlaySelected();
+    }
+
+    public void PlayPrevious()
+    {
+        if (myAudioCollection == null || myAudioCollection.Count <= 0)
+        {
+            return;
+        }
+
+        audioIndex = (audioIndex - 1 + myAudioCollection.Count) % myAudioCollection.Count;
+        PlaySelected();
+    }
+
     private bool TryGetSelectedClip(out AudioClip clip)
     {
         clip = null;
 
-        if (AudioManager.Instance == null)
-        {
-            Debug.LogWarning("AudioPlayer: AudioManager.Instance nao encontrado.", this);
-            return false;
-        }
-
         if (myAudioCollection == null)
         {
-            Debug.LogWarning("AudioPlayer: nenhum AudioCollection foi atribuido.", this);
             return false;
         }
 
-        if (!myAudioCollection.TryGetClip(audioIndex, out clip))
-        {
-            Debug.LogWarning($"AudioPlayer: indice {audioIndex} invalido ou sem AudioClip na colecao.", this);
-            return false;
-        }
-
-        return true;
+        SetIndex(audioIndex);
+        return myAudioCollection.TryGetClip(audioIndex, out clip);
     }
 }

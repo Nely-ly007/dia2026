@@ -5,8 +5,8 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
 
-    private AudioSource systemSource;
-    private List<AudioSource> activeSources;
+    private AudioSource _systemSource;
+    private List<AudioSource> _activeSources;
 
     private void Awake()
     {
@@ -14,8 +14,8 @@ public class AudioManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            systemSource = gameObject.GetComponent<AudioSource>();
-            activeSources = new List<AudioSource>();
+            _systemSource = gameObject.GetComponent<AudioSource>();
+            _activeSources = new List<AudioSource>();
         }
         else
         {
@@ -26,44 +26,44 @@ public class AudioManager : MonoBehaviour
     // Funções de gerenciamento de áudio
     public void PlaySound(AudioClip clip)
     {
-        if (systemSource == null || clip == null)
+        if (_systemSource == null || clip == null)
         {
             return;
         }
 
-        systemSource.Stop();
-        systemSource.clip = clip;
-        systemSource.Play();
+        _systemSource.Stop();
+        _systemSource.clip = clip;
+        _systemSource.Play();
     }
 
     public void StopSound()
     {
-        if (systemSource == null)
+        if (_systemSource == null)
         {
             return;
         }
 
-        systemSource.Stop();
+        _systemSource.Stop();
     }
 
     public void PauseSound()
     {
-        if (systemSource == null)
+        if (_systemSource == null)
         {
             return;
         }
 
-        systemSource.Pause();
+        _systemSource.Pause();
     }
 
     public void ResumeSound()
     {
-        if (systemSource == null)
+        if (_systemSource == null)
         {
             return;
         }
 
-        systemSource.UnPause();
+        _systemSource.UnPause();
     }
 
     // Compatibilidade com chamadas antigas
@@ -84,12 +84,12 @@ public class AudioManager : MonoBehaviour
 
     public void PlayOneShot(AudioClip clip)
     {
-        if (systemSource == null || clip == null)
+        if (_systemSource == null || clip == null)
         {
             return;
         }
 
-        systemSource.PlayOneShot(clip);
+        _systemSource.PlayOneShot(clip);
     }
 
     // Funções de gerenciamento de audio 3d
@@ -100,9 +100,9 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
-        if (!activeSources.Contains(source))
+        if (!_activeSources.Contains(source))
         {
-            activeSources.Add(source);
+            _activeSources.Add(source);
         }
 
         source.Stop();
@@ -117,9 +117,9 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
-        if (!activeSources.Contains(source))
+        if (!_activeSources.Contains(source))
         {
-            activeSources.Add(source);
+            _activeSources.Add(source);
         }
     }
 
@@ -131,7 +131,7 @@ public class AudioManager : MonoBehaviour
         }
 
         source.Stop();
-        activeSources.Remove(source);
+        _activeSources.Remove(source);
     }
 
     public void PauseSound(AudioSource source)
@@ -142,7 +142,7 @@ public class AudioManager : MonoBehaviour
         }
 
         source.Pause();
-        activeSources.Remove(source);
+        _activeSources.Remove(source);
     }
 
     public void ResumeSound(AudioSource source)
@@ -153,6 +153,6 @@ public class AudioManager : MonoBehaviour
         }
 
         source.UnPause();
-        activeSources.Remove(source);
+        _activeSources.Remove(source);
     }
 }

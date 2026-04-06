@@ -1,15 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
-using System;
 using System.IO;
 using System.Reflection;
 
-[CustomEditor(typeof(Readme))]
-[InitializeOnLoad]
-public class ReadmeEditor : Editor
+namespace TutorialInfo.Scripts.Editor
 {
+    [CustomEditor(typeof(Readme))]
+    [InitializeOnLoad]
+    public class ReadmeEditor : UnityEditor.Editor
+    {
     static string s_ShowedReadmeSessionStateName = "ReadmeEditor.showedReadme";
     
     static string s_ReadmeSourceDirectory = "Assets/TutorialInfo";
@@ -71,7 +70,10 @@ public class ReadmeEditor : Editor
         var assembly = typeof(EditorApplication).Assembly;
         var windowLayoutType = assembly.GetType("UnityEditor.WindowLayout", true);
         var method = windowLayoutType.GetMethod("LoadWindowLayout", BindingFlags.Public | BindingFlags.Static);
-        method.Invoke(null, new object[] { Path.Combine(Application.dataPath, "TutorialInfo/Layout.wlt"), false });
+        if (method != null)
+        {
+            method.Invoke(null, new object[] { Path.Combine(Application.dataPath, "TutorialInfo/Layout.wlt"), false });
+        }
     }
 
     static Readme SelectReadme()
@@ -238,5 +240,6 @@ public class ReadmeEditor : Editor
         EditorGUIUtility.AddCursorRect(position, MouseCursor.Link);
 
         return GUI.Button(position, label, LinkStyle);
+    }
     }
 }

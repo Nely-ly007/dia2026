@@ -6,8 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/Scenes/_boot.unity
+    guid: 1dcee2584bc9c7747a30c54bc5f61b27
+  - enabled: 1
+    path: Assets/Scenes/novo.unity
+    guid: 64a31441d5a61e845a5414944faeaee7
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
