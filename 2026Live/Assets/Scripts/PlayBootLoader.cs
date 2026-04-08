@@ -6,7 +6,7 @@ public static class PlayBootLoader
 {
     private const string BootSceneName = "_boot";
     private const string MainSceneName = "novo";
-    private const float BootDelaySeconds = 1f;
+    private const float BootDelaySeconds = 0.5f;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     private static void LoadMainSceneAfterBoot()

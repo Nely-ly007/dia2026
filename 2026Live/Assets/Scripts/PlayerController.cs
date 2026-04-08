@@ -1,9 +1,12 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 [RequireComponent(typeof(Rigidbody), typeof(PlayerInput))]
 public class PlayerController : MonoBehaviour
 {
+    public TextMeshProUGUI countText;
     [Header("Movement")]
     [SerializeField] private float accelerationForce = 18f;
     [SerializeField] private float maxSpeed = 8f;
@@ -17,9 +20,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool enableKeyboardFallback = true;
 
     private Rigidbody _playerRigidbody;
+    private int count;
     private PlayerInput _playerInput;
     private InputAction _moveAction;
     private Vector2 _moveInput;
+
+    private void Start()
+    {
+        _playerRigidbody =  GetComponent<Rigidbody>();
+        count = 0;
+        
+        SetCountText();
+    }
 
     private void Awake()
     {
@@ -32,7 +44,10 @@ public class PlayerController : MonoBehaviour
     {
         ResolveMoveAction();
     }
-
+    void SetCountText() 
+    {
+        countText.text =  "Count: " + count.ToString();
+    }
     private void Update()
     {
         _moveInput = ReadMoveInput();
@@ -45,6 +60,15 @@ public class PlayerController : MonoBehaviour
         ClampHorizontalSpeed();
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("PickUp")) 
+        {
+            other.gameObject.SetActive(false);
+            count = count + 1;
+            SetCountText();
+        }
+    }
     private void ResolveMoveAction()
     {
         _moveAction = null;
