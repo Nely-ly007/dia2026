@@ -5,7 +5,7 @@ using System.Collections;
 public static class PlayBootLoader
 {
     private const string BootSceneName = "_boot";
-    private const string MainSceneName = "novo";
+    private const string MainSceneName = "MenuPrincipal";
     private const float BootDelaySeconds = 0.5f;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -36,7 +36,10 @@ public static class PlayBootLoader
         private IEnumerator LoadAfterDelay()
         {
             yield return new WaitForSeconds(_delaySeconds);
-            SceneManager.LoadScene(_sceneName, LoadSceneMode.Single);
+            if (SceneManager.GetActiveScene().name != _sceneName)
+            {
+                SceneManager.LoadScene(_sceneName, LoadSceneMode.Single);
+            }
         }
     }
 }

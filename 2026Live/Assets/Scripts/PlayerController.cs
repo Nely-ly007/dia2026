@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
@@ -20,7 +19,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool enableKeyboardFallback = true;
 
     private Rigidbody _playerRigidbody;
-    private int count;
+    private int _count;
     private PlayerInput _playerInput;
     private InputAction _moveAction;
     private Vector2 _moveInput;
@@ -28,9 +27,14 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         _playerRigidbody =  GetComponent<Rigidbody>();
-        count = 0;
+        _count = 0;
         
         SetCountText();
+
+        // Aloca o input para este jogador.
+        var playerInput = GetComponent<PlayerInput>();
+        if (playerInput != null)
+            GameManager.Instance.AlocarInput(playerInput);
     }
 
     private void Awake()
@@ -46,7 +50,7 @@ public class PlayerController : MonoBehaviour
     }
     void SetCountText() 
     {
-        countText.text =  "Count: " + count.ToString();
+        countText.text =  "Count: " + _count.ToString();
     }
     private void Update()
     {
@@ -65,7 +69,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("PickUp")) 
         {
             other.gameObject.SetActive(false);
-            count = count + 1;
+            _count = _count + 1;
             SetCountText();
         }
     }
