@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
-using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,11 +11,9 @@ public class GameManager : MonoBehaviour
     private const string SplashSceneName = "Splash";
     private const string MenuSceneName = "MenuPrincipal";
     private const string GameplaySceneName = "novo";
-    private const float SplashDelaySeconds = 2f;
 
     // --- Estado atual ---
     private GameState _estadoAtual;
-    private Coroutine _splashReturnCoroutine;
     public GameState EstadoAtual => _estadoAtual;
 
     void Awake()
@@ -40,19 +36,10 @@ public class GameManager : MonoBehaviour
         if (SceneManager.GetActiveScene().name == BootSceneName)
         {
             CarregarCena(MenuSceneName);
+            return;
         }
 
-        ConfigurarCenaAtiva(SceneManager.GetActiveScene().name);
-    }
-
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        AtualizarEstadoPorCena(SceneManager.GetActiveScene().name);
     }
 
     // --- Único ponto de mudança de cena no jogo ---
@@ -148,65 +135,4 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        ConfigurarCenaAtiva(scene.name);
-    }
-
-    private void ConfigurarCenaAtiva(string sceneName)
-    {
-        if (sceneName == MenuSceneName)
-        {
-            ConfigurarBotoesMenu();
-            return;
-        }
-
-        if (sceneName == SplashSceneName)
-        {
-            IniciarRetornoDaSplash();
-        }
-    }
-
-    private void ConfigurarBotoesMenu()
-    {
-        RegistrarBotao("BotaoIniciar", BotaoIniciar);
-        RegistrarBotao("BotaoSair", BotaoSair);
-    }
-
-    private void RegistrarBotao(string buttonObjectName, UnityEngine.Events.UnityAction action)
-    {
-        GameObject buttonObject = GameObject.Find(buttonObjectName);
-        if (buttonObject == null)
-        {
-            Debug.LogWarning($"[GameManager] Botao nao encontrado na cena: {buttonObjectName}");
-            return;
-        }
-
-        Button button = buttonObject.GetComponent<Button>();
-        if (button == null)
-        {
-            Debug.LogWarning($"[GameManager] Componente Button ausente em: {buttonObjectName}");
-            return;
-        }
-
-        button.onClick.RemoveAllListeners();
-        button.onClick.AddListener(action);
-    }
-
-    private void IniciarRetornoDaSplash()
-    {
-        if (_splashReturnCoroutine != null)
-        {
-            StopCoroutine(_splashReturnCoroutine);
-        }
-
-        _splashReturnCoroutine = StartCoroutine(RetornarAoMenuAposDelay());
-    }
-
-    private IEnumerator RetornarAoMenuAposDelay()
-    {
-        yield return new WaitForSeconds(SplashDelaySeconds);
-        _splashReturnCoroutine = null;
-        CarregarCena(MenuSceneName);
-    }
 }
