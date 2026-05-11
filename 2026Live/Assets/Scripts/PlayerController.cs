@@ -167,4 +167,5 @@ public class PlayerController : MonoBehaviour
         horizontalVelocity = horizontalVelocity.normalized * maxSpeed;
         _playerRigidbody.linearVelocity = new Vector3(horizontalVelocity.x, velocity.y, horizontalVelocity.z);
     }
+    
 }

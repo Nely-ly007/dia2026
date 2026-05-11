@@ -1,17 +1,40 @@
+using System;
 using UnityEngine;
 
 public class PortaController : MonoBehaviour
 {
     public Animator anim;
-    public bool;
-    void Start()
+    private bool isOpen;
+    private bool isInteractable;
+
+    private void Start()
     {
-        
+        anim = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        
+        if (other.tag == "Player" && !isInteractable)
+        {
+            InteractOM.OnInteract += OpenClose;
+            isInteractable = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            InteractOM.OnInteract -= OpenClose;
+        }
+    }
+
+    private void OpenClose()
+    {
+        if (!isOpen)
+        {
+            anim.Play("PortaAbrindo");
+            isOpen = true;
+        }
     }
 }
