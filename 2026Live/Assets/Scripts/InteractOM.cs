@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class InteractOM
+public static class InteractOM
 {
     public static event Action OnInteract;
 
@@ -10,4 +10,17 @@ public class InteractOM
         OnInteract?.Invoke();
     }
     
+    public static event Action<bool> OnShowInteraction;
+    
+    public static void ShowInteraction(bool value)
+    {
+        OnShowInteraction?.Invoke(value);
+    }
+    
+    public static event Action<Vector3> OnPositionChange;
+
+    public static void PositionChange(Vector3 value)
+    {
+        OnPositionChange?.Invoke(value);
+    }
 }
