@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,6 +14,7 @@ public class GameManager : MonoBehaviour
     private const string SplashSceneName = "Splash";
     private const string MenuSceneName = "MenuPrincipal";
     private const string GameplaySceneName = "novo";
+    private const string GUI_SCENE_NAME = "GUI";
 
     // --- Estado atual ---
     private GameState _estadoAtual;
@@ -38,8 +42,51 @@ public class GameManager : MonoBehaviour
             CarregarCena(MenuSceneName);
             return;
         }
+        {
+            StartCoroutine(LoadGUIScene());
+        }
+
 
         AtualizarEstadoPorCena(SceneManager.GetActiveScene().name);
+    }
+    
+    private IEnumerator LoadGUIScene()
+    {
+        // Verifica se a cena GUI já não está carregada
+        if (!SceneManager.GetSceneByName(GUI_SCENE_NAME).isLoaded)
+        {
+            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(
+                GUI_SCENE_NAME,
+                LoadSceneMode.Additive
+            );
+
+            // Aguarda o carregamento terminar
+            while (!asyncLoad.isDone)
+            {
+                yield return null;
+            }
+
+            Debug.Log("[GameManager] Cena GUI carregada de forma aditiva com sucesso.");
+        }
+        else
+        {
+            Debug.Log("[GameManager] Cena GUI já estava carregada.");
+        }
+    }
+    public void RestartGame()
+    {
+        // Reseta o canal para evitar inscrições duplicadas
+        PlayerOM.ResetChannel();
+
+        // Descarrega a GUI antes de recarregar tudo
+        SceneManager.UnloadSceneAsync(GUI_SCENE_NAME);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+        Debug.Log("[GameManager] Saindo do jogo.");
     }
 
     // --- Único ponto de mudança de cena no jogo ---
