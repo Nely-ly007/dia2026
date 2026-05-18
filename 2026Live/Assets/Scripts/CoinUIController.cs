@@ -1,53 +1,49 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[RequireComponent(typeof(UIDocument))]
 public class CoinUIController : MonoBehaviour
 {
-    private UIDocument uiDocument;
     private Label coinLabel;
 
-    private void Awake()
+    void OnEnable()
     {
-        uiDocument = GetComponent<UIDocument>();
+        var uiDocument = GetComponent<UIDocument>();
 
         if (uiDocument == null)
         {
-            Debug.LogError("[CoinUIController] UIDocument não encontrado!");
-            return;
-        }
-
-        if (uiDocument.rootVisualElement == null)
-        {
-            Debug.LogError("[CoinUIController] rootVisualElement é nulo — verifique o UXML!");
+            Debug.LogError("[CoinUIController] UIDocument não encontrado neste GameObject!");
             return;
         }
 
         coinLabel = uiDocument.rootVisualElement.Q<Label>("coin-label");
 
         if (coinLabel == null)
-            Debug.LogError("[CoinUIController] Label 'coin-label' não encontrado no UXML!");
+            Debug.LogError("[CoinUIController] Label 'coin-label' não encontrado no UIDocument!");
         else
-            Debug.Log("[CoinUIController] Label encontrado com sucesso!");
-    }
+        {
+            coinLabel.text = "Moedas: 0";
+            Debug.Log("[CoinUIController] coinLabel encontrado com sucesso.");
+        }
 
-    private void OnEnable()
-    {
+        // Inscreve no canal Observer
         PlayerOM.OnCoinCollected += UpdateCoinDisplay;
-        UpdateCoinDisplay(0);
-        Debug.Log("[CoinUIController] Inscrito no canal PlayerOM.");
+        Debug.Log("[CoinUIController] Inscrito no PlayerOM.OnCoinCollected.");
     }
 
-    private void OnDisable()
+    void OnDisable()
     {
+        // Desinscreve para evitar chamadas em objeto destruído
         PlayerOM.OnCoinCollected -= UpdateCoinDisplay;
     }
 
-    private void UpdateCoinDisplay(int totalCoins)
+    private void UpdateCoinDisplay(int total)
     {
-        if (coinLabel != null)
-            coinLabel.text = $"Moedas: {totalCoins}";
-        else
-            Debug.LogWarning("[CoinUIController] UpdateCoinDisplay chamado mas coinLabel é nulo!");
+        if (coinLabel == null)
+        {
+            Debug.LogWarning("[CoinUIController] coinLabel é nulo ao atualizar!");
+            return;
+        }
+
+        coinLabel.text = $"Moedas: {total}";
     }
 }
