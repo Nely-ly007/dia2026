@@ -9,9 +9,15 @@ EditorBuildSettings:
     path: Assets/Scenes/_boot.unity
     guid: 1dcee2584bc9c7747a30c54bc5f61b27
   - enabled: 1
+    path: Assets/Scenes/SelecaoBolinha.unity
+    guid: fc8791c15b8d5214288ed767e904c39e
+  - enabled: 1
+    path: Assets/Scenes/SumoBolinhas.unity
+    guid: 46b333a8755c1a642b6f23123ee95b8e
+  - enabled: 1
     path: Assets/Scenes/MenuPrincipal.unity
     guid: db9eb81b56f637241b45e69ef4f0e06e
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/novo.unity
     guid: 64a31441d5a61e845a5414944faeaee7
   - enabled: 1

@@ -1,0 +1,78 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+
+    <ui:VisualElement name="root" style="
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        background-color: rgb(20, 20, 30);
+    ">
+
+        <!-- JOGADOR 1 -->
+        <ui:VisualElement name="painel-j1" style="
+            align-items: center;
+            background-color: rgba(0,100,200,0.2);
+            border-radius: 16px;
+            padding: 24px;
+            width: 40%;
+        ">
+            <ui:Label text="JOGADOR 1" style="font-size: 22px; color: rgb(100,180,255); -unity-font-style: bold; margin-bottom: 16px;"/>
+
+            <!-- Ícone (círculo colorido representando a bolinha) -->
+            <ui:VisualElement name="icone-j1" style="
+                width: 80px; height: 80px;
+                border-radius: 40px;
+                margin-bottom: 12px;
+                background-color: rgb(255,255,255);
+            "/>
+
+            <ui:Label name="nome-j1" text="Bolinha" style="font-size: 20px; color: white; -unity-font-style: bold;"/>
+            <ui:Label name="status-j1" text="" style="font-size: 14px; color: rgb(200,200,200); margin-top: 8px; white-space: normal;"/>
+
+            <!-- Navegação -->
+            <ui:VisualElement style="flex-direction: row; margin-top: 16px;">
+                <ui:Button name="anterior-j1" text="&lt;" style="font-size: 20px; width: 40px;"/>
+                <ui:Button name="proximo-j1"  text="&gt;" style="font-size: 20px; width: 40px;"/>
+            </ui:VisualElement>
+
+            <ui:Button name="confirmar-j1" text="Confirmar" style="margin-top: 16px; font-size: 16px; padding: 8px 24px;"/>
+        </ui:VisualElement>
+
+        <!-- CENTRO -->
+        <ui:VisualElement style="align-items: center;">
+            <ui:Label text="VS" style="font-size: 48px; color: rgb(255,200,50); -unity-font-style: bold;"/>
+            <ui:Label name="aviso" text="" style="font-size: 13px; color: rgb(255,150,100); margin-top: 16px; white-space: normal; max-width: 160px;"/>
+        </ui:VisualElement>
+
+        <!-- JOGADOR 2 -->
+        <ui:VisualElement name="painel-j2" style="
+            align-items: center;
+            background-color: rgba(200,50,50,0.2);
+            border-radius: 16px;
+            padding: 24px;
+            width: 40%;
+        ">
+            <ui:Label text="JOGADOR 2" style="font-size: 22px; color: rgb(255,120,120); -unity-font-style: bold; margin-bottom: 16px;"/>
+
+            <ui:VisualElement name="icone-j2" style="
+                width: 80px; height: 80px;
+                border-radius: 40px;
+                margin-bottom: 12px;
+                background-color: rgb(255,255,255);
+            "/>
+
+            <ui:Label name="nome-j2" text="Bolinha" style="font-size: 20px; color: white; -unity-font-style: bold;"/>
+            <ui:Label name="status-j2" text="" style="font-size: 14px; color: rgb(200,200,200); margin-top: 8px; white-space: normal;"/>
+
+            <ui:VisualElement style="flex-direction: row; margin-top: 16px;">
+                <ui:Button name="anterior-j2" text="&lt;" style="font-size: 20px; width: 40px;"/>
+                <ui:Button name="proximo-j2"  text="&gt;" style="font-size: 20px; width: 40px;"/>
+            </ui:VisualElement>
+
+            <ui:Button name="confirmar-j2" text="Confirmar" style="margin-top: 16px; font-size: 16px; padding: 8px 24px;"/>
+        </ui:VisualElement>
+
+    </ui:VisualElement>
+
+</ui:UXML>

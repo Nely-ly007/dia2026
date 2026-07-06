@@ -1,6 +1,6 @@
 {
     "version": 1,
-    "name": "SumoControld",
+    "name": "SumoControls",
     "maps": [
         {
             "name": "Jogador1",
@@ -16,7 +16,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Ação",
+                    "name": "Acao",
                     "type": "Button",
                     "id": "0adbd704-1ecd-4ad8-b63a-a59df01164d7",
                     "expectedControlType": "",
@@ -33,7 +33,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Ação",
+                    "action": "Acao",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -108,7 +108,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Ação",
+                    "name": "Acao",
                     "type": "Button",
                     "id": "a3e35f8a-9a27-4d61-bad0-821ae4a18080",
                     "expectedControlType": "",
@@ -180,7 +180,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Ação",
+                    "action": "Acao",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
