@@ -5,16 +5,14 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
-    // --- Singleton ---
     public static GameManager Instance { get; private set; }
 
-    private const string BootSceneName = "_boot";
-    private const string SplashSceneName = "Splash";
-    private const string MenuSceneName = "MenuPrincipal";
-    private const string GameplaySceneName = "novo";
-    private const string GUI_SCENE_NAME = "GUI";
+    private const string BootSceneName    = "_boot";
+    private const string SplashSceneName  = "Splash";
+    private const string MenuSceneName    = "MenuPrincipal";
+    private const string SelecaoSceneName = "SelecaoBolinha";
+    private const string GUI_SCENE_NAME   = "GUI";
 
-    // --- Estado atual ---
     private GameState _estadoAtual;
     public GameState EstadoAtual => _estadoAtual;
 
@@ -27,19 +25,15 @@ public class GameManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
-
         MudarEstado(GameState.Iniciando);
     }
 
     void Start()
     {
         if (SceneManager.GetActiveScene().name == BootSceneName)
-        {
             CarregarCena(MenuSceneName);
-        }
     }
 
-    // --- Único ponto de mudança de cena no jogo ---
     public void CarregarCena(string nomeDaCena)
     {
         if (!PodeCarregarCena(nomeDaCena))
@@ -48,7 +42,6 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // Se estava no Gameplay e vai sair, descarrega a GUI antes
         if (_estadoAtual == GameState.Gameplay)
         {
             if (SceneManager.GetSceneByName(GUI_SCENE_NAME).isLoaded)
@@ -57,49 +50,17 @@ public class GameManager : MonoBehaviour
 
         AtualizarEstadoPorCena(nomeDaCena);
         SceneManager.LoadScene(nomeDaCena);
-
-        // Se entrou no Gameplay, carrega a GUI de forma aditiva
-        if (_estadoAtual == GameState.Gameplay)
-        {
-            StartCoroutine(LoadGUIScene());
-        }
     }
 
-    private IEnumerator LoadGUIScene()
-    {
-        if (SceneManager.GetSceneByName(GUI_SCENE_NAME).isLoaded)
-        {
-            Debug.Log("[GameManager] Cena GUI já estava carregada.");
-            yield break;
-        }
-
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(GUI_SCENE_NAME, LoadSceneMode.Additive);
-
-        while (!asyncLoad.isDone)
-            yield return null;
-
-        Debug.Log("[GameManager] Cena GUI carregada de forma aditiva com sucesso.");
-    }
-
+    // Botão Iniciar do Menu agora delega ao SumoGameManager
     public void BotaoIniciar()
     {
-        CarregarCena(GameplaySceneName);
+        SumoGameManager.Instance.IrParaSelecao();
     }
 
     public void BotaoSair()
     {
         QuitGame();
-    }
-
-    public void RestartGame()
-    {
-        PlayerOM.ResetChannel();
-
-        if (SceneManager.GetSceneByName(GUI_SCENE_NAME).isLoaded)
-            SceneManager.UnloadSceneAsync(GUI_SCENE_NAME);
-
-        SceneManager.LoadScene(GameplaySceneName);
-        StartCoroutine(LoadGUIScene());
     }
 
     public void QuitGame()
@@ -108,14 +69,20 @@ public class GameManager : MonoBehaviour
         Debug.Log("[GameManager] Saindo do jogo.");
     }
 
-    // --- Muda o estado e loga no console ---
+    public void RestartGame()
+    {
+        PlayerOM.ResetChannel();
+        if (SceneManager.GetSceneByName(GUI_SCENE_NAME).isLoaded)
+            SceneManager.UnloadSceneAsync(GUI_SCENE_NAME);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
     private void MudarEstado(GameState novoEstado)
     {
         _estadoAtual = novoEstado;
         Debug.Log($"[GameManager] Estado alterado para: {_estadoAtual}");
     }
 
-    // --- Alocação de input para o jogador ---
     public void AlocarInput(PlayerInput playerInput)
     {
         var devices = InputSystem.devices;
@@ -137,13 +104,13 @@ public class GameManager : MonoBehaviour
             return nomeDaCena == MenuSceneName;
 
         if (_estadoAtual == GameState.MenuPrincipal)
-            return nomeDaCena == GameplaySceneName || nomeDaCena == SplashSceneName;
+            return nomeDaCena == SelecaoSceneName || nomeDaCena == SplashSceneName;
 
         if (_estadoAtual == GameState.Splash)
             return nomeDaCena == MenuSceneName;
 
-        if (_estadoAtual == GameState.Gameplay)
-            return nomeDaCena == MenuSceneName || nomeDaCena == SplashSceneName || nomeDaCena == GameplaySceneName;
+        if (_estadoAtual == GameState.Selecao)
+            return nomeDaCena == MenuSceneName;
 
         return false;
     }
@@ -152,6 +119,6 @@ public class GameManager : MonoBehaviour
     {
         if (nomeDaCena == SplashSceneName)   { MudarEstado(GameState.Splash);        return; }
         if (nomeDaCena == MenuSceneName)     { MudarEstado(GameState.MenuPrincipal); return; }
-        if (nomeDaCena == GameplaySceneName) { MudarEstado(GameState.Gameplay);      return; }
+        if (nomeDaCena == SelecaoSceneName)  { MudarEstado(GameState.Selecao);       return; }
     }
 }

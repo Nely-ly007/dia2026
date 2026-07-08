@@ -11,6 +11,15 @@ public class SumoGameManager : MonoBehaviour
     private const string VitoriaSceneName  = "Vitoria";
     private const string GUI_SCENE_NAME    = "SumoGUI";
     private const string MenuSceneName     = "MenuPrincipal";
+    
+    public bool CorPrimariaJ1 { get; private set; }
+    public bool CorPrimariaJ2 { get; private set; }
+
+    public void DefinirCores(bool j1Primaria, bool j2Primaria)
+    {
+        CorPrimariaJ1 = j1Primaria;
+        CorPrimariaJ2 = j2Primaria;
+    }
 
     public BolinhaData DadosJ1 { get; private set; }
     public BolinhaData DadosJ2 { get; private set; }
@@ -31,7 +40,7 @@ public class SumoGameManager : MonoBehaviour
     {
         DadosJ1 = j1;
         DadosJ2 = j2;
-        IrParaSelecao(); // só confirma que os dados foram salvos
+        Debug.Log($"[SumoGameManager] Escolhas definidas: {j1.nomeBolinha} vs {j2.nomeBolinha}");
     }
 
     public void IrParaSelecao()

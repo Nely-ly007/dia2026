@@ -1,48 +1,59 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Bolinha : MonoBehaviour
 {
     [Header("Dados")]
     public BolinhaData dados;
-    public int jogadorIndex; // 0 = J1, 1 = J2
+    public int jogadorIndex;
     public Bolinha inimiga;
 
-    [Header("Cooldown")]
+    [Header("Referências visuais")]
+    [SerializeField] private Renderer rendererCorpo;
+    [SerializeField] private Renderer rendererFaixa;
+
+    [Header("Stats fixos")]
+    public float velocidade = 6f;
+    public float forcaEmpurrao = 10f;
     public float cooldownMax = 3f;
-    private float _cooldownAtual = 0f;
-    public float CooldownNormalizado => Mathf.Clamp01(_cooldownAtual / cooldownMax);
-    public bool PodeUsar => _cooldownAtual <= 0f;
 
     private Rigidbody _rb;
+    private float _cooldownAtual = 0f;
     private int _moedasColetadas = 0;
     private Vector2 _moveInput;
 
-    // Eventos Observer
-    public static event System.Action<int, float> OnCooldownAtualizado; // jogadorIndex, 0-1
-    public static event System.Action<int, int> OnMoedasAtualizadas;    // jogadorIndex, total
+    public bool PodeUsar => _cooldownAtual <= 0f;
+    public float CooldownNormalizado => Mathf.Clamp01(_cooldownAtual / cooldownMax);
 
-    void Awake()
-    {
-        _rb = GetComponent<Rigidbody>();
-    }
+    public static event System.Action<int, float> OnCooldownAtualizado;
+    public static event System.Action<int, int> OnMoedasAtualizadas;
 
-    void Start()
-    {
-        AplicarDados();
-    }
+    void Awake() => _rb = GetComponent<Rigidbody>();
 
-    void AplicarDados()
+    void Start() => AplicarCores();
+
+    void AplicarCores()
     {
         if (dados == null) return;
 
-        transform.localScale = Vector3.one * dados.tamanho;
-        _rb.mass = dados.massaBase;
+        bool usaPrimaria = jogadorIndex == 0
+            ? SumoGameManager.Instance.CorPrimariaJ1
+            : SumoGameManager.Instance.CorPrimariaJ2;
 
-        var renderer = GetComponent<Renderer>();
-        if (renderer != null)
-            renderer.material.color = jogadorIndex == 0 ? dados.corJogador1 : dados.corJogador2;
+        Color corCorpo  = usaPrimaria ? dados.corPrimaria   : dados.corSecundaria;
+        Color corDetalhe = usaPrimaria ? dados.corSecundaria : dados.corPrimaria;
+
+        if (rendererCorpo != null)
+        {
+            rendererCorpo.material = new Material(rendererCorpo.material);
+            rendererCorpo.material.color = corCorpo;
+        }
+
+        if (rendererFaixa != null)
+        {
+            rendererFaixa.material = new Material(rendererFaixa.material);
+            rendererFaixa.material.color = corDetalhe;
+        }
     }
 
     void Update()
@@ -57,16 +68,10 @@ public class Bolinha : MonoBehaviour
 
     void FixedUpdate()
     {
-        float velAtual = dados != null
-            ? dados.velocidade - (dados.lentidaoPorMoeda * _moedasColetadas)
-            : 6f;
-        velAtual = Mathf.Max(velAtual, 1f);
-
-        Vector3 direcao = new Vector3(_moveInput.x, 0f, _moveInput.y);
-        _rb.AddForce(direcao * velAtual, ForceMode.Acceleration);
+        Vector3 dir = new Vector3(_moveInput.x, 0f, _moveInput.y);
+        _rb.AddForce(dir * velocidade, ForceMode.Acceleration);
     }
 
-    // Chamado pelo PlayerInputHandler
     public void OnMover(Vector2 input) => _moveInput = input;
 
     public void OnAcao()
@@ -78,14 +83,10 @@ public class Bolinha : MonoBehaviour
         direcao.y = 0f;
         direcao.Normalize();
 
-        float forcaBase = dados != null ? dados.forcaEmpurrao : 10f;
-        float forcaMoedas = dados != null ? dados.forcaPorMoeda * _moedasColetadas : 0f;
-        // Quanto mais perto, mais forte
-        float multiplicadorDistancia = Mathf.Clamp(1f / Mathf.Max(distancia, 0.1f), 1f, 5f);
+        float multiplicador = Mathf.Clamp(1f / Mathf.Max(distancia, 0.1f), 1f, 5f);
+        float forcaFinal = (forcaEmpurrao + _moedasColetadas * 1.5f) * multiplicador;
 
-        float forcaFinal = (forcaBase + forcaMoedas) * multiplicadorDistancia;
         inimiga.GetComponent<Rigidbody>().AddForce(direcao * forcaFinal, ForceMode.Impulse);
-
         _cooldownAtual = cooldownMax;
         OnCooldownAtualizado?.Invoke(jogadorIndex, 1f);
     }
@@ -93,20 +94,16 @@ public class Bolinha : MonoBehaviour
     public void ColetarMoeda()
     {
         _moedasColetadas++;
-        if (dados != null)
-            _rb.mass = dados.massaBase + (dados.massaPorMoeda * _moedasColetadas);
-
         OnMoedasAtualizadas?.Invoke(jogadorIndex, _moedasColetadas);
     }
 
-    public void Resetar(Vector3 posicaoInicial)
+    public void Resetar(Vector3 posicao)
     {
         _moedasColetadas = 0;
         _cooldownAtual = 0f;
-        _rb.mass = dados != null ? dados.massaBase : 1f;
         _rb.linearVelocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
-        transform.position = posicaoInicial;
-        AplicarDados();
+        transform.position = posicao;
+        AplicarCores();
     }
 }

@@ -3,5 +3,7 @@ public enum GameState
     Iniciando,
     Splash,
     MenuPrincipal,
-    Gameplay
+    Selecao,
+    Gameplay,
+    Vitoria
 }

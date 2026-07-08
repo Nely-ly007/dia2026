@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d78a618112ff52a4688ff36fabb59f98, type: 3}
-  m_Name: BolinhaData
+  m_Name: BolinhaData 3
   m_EditorClassIdentifier: Assembly-CSharp::BolinhaData
-  nomeBolinha: 1bolinha
-  corPrimaria: {r: 1, g: 0, b: 0, a: 1}
-  corSecundaria: {r: 0, g: 1, b: 0, a: 1}
+  nomeBolinha: 123bolinha
+  corPrimaria: {r: 0.8627452, g: 0.07843138, b: 0.2352941, a: 1}
+  corSecundaria: {r: 0, g: 0.3921569, b: 0, a: 1}
