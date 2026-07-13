@@ -26,6 +26,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GUI.unity
     guid: f1c8a8f495f0b7346bee999b4ee33bae
+  - enabled: 1
+    path: Assets/Scenes/SumoGUI.unity
+    guid: c518c9eaabb8ecf49a3083842882639a
+  - enabled: 1
+    path: Assets/Scenes/Vitoria.unity
+    guid: b83c0584c6b59b249a04c08f884a9f1e
+  - enabled: 1
+    path: Assets/Scenes/SumoGameplay.unity
+    guid: de245635a7586da4080213892c6e7c5e
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

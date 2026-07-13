@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d78a618112ff52a4688ff36fabb59f98, type: 3}
   m_Name: BolinhaData
   m_EditorClassIdentifier: Assembly-CSharp::BolinhaData
-  nomeBolinha: 1bolinha
+  nomeBolinha: bolinha
   corPrimaria: {r: 1, g: 0, b: 0, a: 1}
   corSecundaria: {r: 0, g: 1, b: 0, a: 1}
