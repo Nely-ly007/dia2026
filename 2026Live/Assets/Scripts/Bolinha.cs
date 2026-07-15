@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Bolinha : MonoBehaviour
 {
-    [Header("Dados visuais (cor)")]
+    [Header("Dados")]
     public BolinhaData dados;
     public int jogadorIndex;
     public Bolinha inimiga;
@@ -12,26 +12,15 @@ public class Bolinha : MonoBehaviour
     [SerializeField] private Renderer rendererCorpo;
     [SerializeField] private Renderer rendererFaixa;
 
-    [Header("Stats de jogo (iguais para todas as bolinhas)")]
-    public float velocidadeBase = 6f;
-    public float forcaEmpurraoBase = 10f;
+    [Header("Stats fixos")]
+    public float velocidade = 6f;
+    public float forcaEmpurrao = 10f;
     public float cooldownMax = 3f;
-    public float resistenciaBase = 1f;
 
     private Rigidbody _rb;
     private float _cooldownAtual = 0f;
     private int _moedasColetadas = 0;
     private Vector2 _moveInput;
-
-    // Stats efetivos: variam só com as moedas coletadas, nunca com o tipo/cor da bolinha
-    private float VelocidadeEfetiva =>
-        Mathf.Max(0.5f, velocidadeBase - _moedasColetadas * 0.3f); // fica mais lenta
-
-    private float ForcaEmpurraoEfetiva =>
-        forcaEmpurraoBase + _moedasColetadas * 1.5f; // empurra mais forte
-
-    private float ResistenciaEfetiva =>
-        resistenciaBase + _moedasColetadas * 0.5f; // mais difícil de ser jogada longe
 
     public bool PodeUsar => _cooldownAtual <= 0f;
     public float CooldownNormalizado => Mathf.Clamp01(_cooldownAtual / cooldownMax);
@@ -43,16 +32,21 @@ public class Bolinha : MonoBehaviour
 
     void Start() => AplicarCores();
 
-    void AplicarCores()
+    public void AplicarCores()
     {
-        if (dados == null) return;
+        if (SumoGameManager.Instance == null) return;
 
-        bool usaPrimaria = jogadorIndex == 0
-            ? SumoGameManager.Instance.CorPrimariaJ1
-            : SumoGameManager.Instance.CorPrimariaJ2;
-
-        Color corCorpo = usaPrimaria ? dados.corPrimaria : dados.corSecundaria;
-        Color corDetalhe = usaPrimaria ? dados.corSecundaria : dados.corPrimaria;
+        Color corCorpo, corFaixa;
+        if (jogadorIndex == 0)
+        {
+            corCorpo = SumoGameManager.Instance.CorCorpoJ1;
+            corFaixa = SumoGameManager.Instance.CorFaixaJ1;
+        }
+        else
+        {
+            corCorpo = SumoGameManager.Instance.CorCorpoJ2;
+            corFaixa = SumoGameManager.Instance.CorFaixaJ2;
+        }
 
         if (rendererCorpo != null)
         {
@@ -63,7 +57,7 @@ public class Bolinha : MonoBehaviour
         if (rendererFaixa != null)
         {
             rendererFaixa.material = new Material(rendererFaixa.material);
-            rendererFaixa.material.color = corDetalhe;
+            rendererFaixa.material.color = corFaixa;
         }
     }
 
@@ -80,7 +74,7 @@ public class Bolinha : MonoBehaviour
     void FixedUpdate()
     {
         Vector3 dir = new Vector3(_moveInput.x, 0f, _moveInput.y);
-        _rb.AddForce(dir * VelocidadeEfetiva, ForceMode.Acceleration);
+        _rb.AddForce(dir * velocidade, ForceMode.Acceleration);
     }
 
     public void OnMover(Vector2 input) => _moveInput = input;
@@ -95,7 +89,7 @@ public class Bolinha : MonoBehaviour
         direcao.Normalize();
 
         float multiplicador = Mathf.Clamp(1f / Mathf.Max(distancia, 0.1f), 1f, 5f);
-        float forcaFinal = (ForcaEmpurraoEfetiva * multiplicador) / inimiga.ResistenciaEfetiva;
+        float forcaFinal = (forcaEmpurrao + _moedasColetadas * 1.5f) * multiplicador;
 
         inimiga.GetComponent<Rigidbody>().AddForce(direcao * forcaFinal, ForceMode.Impulse);
         _cooldownAtual = cooldownMax;

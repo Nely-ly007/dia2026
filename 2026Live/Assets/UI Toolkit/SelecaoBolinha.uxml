@@ -20,29 +20,48 @@
             padding: 24px;
             width: 40%;
         ">
-            <ui:Label text="JOGADOR 1" style="font-size: 22px; color: rgb(100,180,255); -unity-font-style: bold; margin-bottom: 16px;"/>
+            <ui:Label text="JOGADOR 1" style="font-size: 22px; color: rgb(100,180,255); -unity-font-style: bold; margin-bottom: 12px;"/>
 
-            <ui:VisualElement name="icone-j1" style="
-                width: 80px;
-                height: 80px;
-                border-top-left-radius: 40px;
-                border-top-right-radius: 40px;
-                border-bottom-left-radius: 40px;
-                border-bottom-right-radius: 40px;
-                margin-bottom: 12px;
-                background-color: rgb(255,255,255);
-            "/>
-
-            <ui:Label name="nome-j1" text="Bolinha" style="font-size: 20px; color: white; -unity-font-style: bold;"/>
-            <ui:Label name="label-cor-j1" text="Cor: Primária" style="font-size: 14px; color: rgb(200,200,200); margin-top: 8px;"/>
-
-            <ui:VisualElement style="flex-direction: row; margin-top: 16px;">
-                <ui:Button name="anterior-j1" text="&lt;" style="font-size: 20px; width: 40px;"/>
-                <ui:Button name="proximo-j1"  text="&gt;" style="font-size: 20px; width: 40px;"/>
+            <!-- Preview da bolinha: corpo + faixa -->
+            <ui:VisualElement style="flex-direction: row; align-items: center; margin-bottom: 12px;">
+                <ui:VisualElement name="icone-j1" style="
+                    width: 70px; height: 70px;
+                    border-top-left-radius: 35px;
+                    border-top-right-radius: 35px;
+                    border-bottom-left-radius: 35px;
+                    border-bottom-right-radius: 35px;
+                    background-color: rgb(255,255,255);
+                "/>
+                <ui:VisualElement name="icone-faixa-j1" style="
+                    width: 70px; height: 14px;
+                    background-color: rgb(200,200,200);
+                    margin-left: -70px;
+                    margin-top: 28px;
+                "/>
             </ui:VisualElement>
 
-            <ui:Button name="trocar-cor-j1" text="Trocar Cor" style="margin-top: 8px; font-size: 14px; padding: 6px 16px;"/>
-            <ui:Button name="confirmar-j1" text="Confirmar" style="margin-top: 8px; font-size: 16px; padding: 8px 24px;"/>
+            <!-- Bolinha -->
+            <ui:Label name="nome-j1" text="Bolinha" style="font-size: 18px; color: white; -unity-font-style: bold;"/>
+            <ui:VisualElement style="flex-direction: row; margin-top: 8px;">
+                <ui:Button name="anterior-j1" text="&lt;" style="font-size: 18px; width: 36px;"/>
+                <ui:Button name="proximo-j1"  text="&gt;" style="font-size: 18px; width: 36px;"/>
+            </ui:VisualElement>
+
+            <!-- Cor do corpo -->
+            <ui:Label name="label-cor-corpo-j1" text="Corpo: Vermelho" style="font-size: 13px; color: rgb(200,200,200); margin-top: 10px;"/>
+            <ui:VisualElement style="flex-direction: row; margin-top: 4px;">
+                <ui:Button name="corpo-anterior-j1" text="&lt;" style="font-size: 18px; width: 36px;"/>
+                <ui:Button name="corpo-proximo-j1"  text="&gt;" style="font-size: 18px; width: 36px;"/>
+            </ui:VisualElement>
+
+            <!-- Cor da faixa -->
+            <ui:Label name="label-cor-faixa-j1" text="Faixa: Azul" style="font-size: 13px; color: rgb(200,200,200); margin-top: 10px;"/>
+            <ui:VisualElement style="flex-direction: row; margin-top: 4px;">
+                <ui:Button name="faixa-anterior-j1" text="&lt;" style="font-size: 18px; width: 36px;"/>
+                <ui:Button name="faixa-proximo-j1"  text="&gt;" style="font-size: 18px; width: 36px;"/>
+            </ui:VisualElement>
+
+            <ui:Button name="confirmar-j1" text="Confirmar" style="margin-top: 14px; font-size: 16px; padding: 8px 24px;"/>
         </ui:VisualElement>
 
         <!-- CENTRO -->
@@ -62,29 +81,48 @@
             padding: 24px;
             width: 40%;
         ">
-            <ui:Label text="JOGADOR 2" style="font-size: 22px; color: rgb(255,120,120); -unity-font-style: bold; margin-bottom: 16px;"/>
+            <ui:Label text="JOGADOR 2" style="font-size: 22px; color: rgb(255,120,120); -unity-font-style: bold; margin-bottom: 12px;"/>
 
-            <ui:VisualElement name="icone-j2" style="
-                width: 80px;
-                height: 80px;
-                border-top-left-radius: 40px;
-                border-top-right-radius: 40px;
-                border-bottom-left-radius: 40px;
-                border-bottom-right-radius: 40px;
-                margin-bottom: 12px;
-                background-color: rgb(255,255,255);
-            "/>
-
-            <ui:Label name="nome-j2" text="Bolinha" style="font-size: 20px; color: white; -unity-font-style: bold;"/>
-            <ui:Label name="label-cor-j2" text="Cor: Primária" style="font-size: 14px; color: rgb(200,200,200); margin-top: 8px;"/>
-
-            <ui:VisualElement style="flex-direction: row; margin-top: 16px;">
-                <ui:Button name="anterior-j2" text="&lt;" style="font-size: 20px; width: 40px;"/>
-                <ui:Button name="proximo-j2"  text="&gt;" style="font-size: 20px; width: 40px;"/>
+            <!-- Preview da bolinha: corpo + faixa -->
+            <ui:VisualElement style="flex-direction: row; align-items: center; margin-bottom: 12px;">
+                <ui:VisualElement name="icone-j2" style="
+                    width: 70px; height: 70px;
+                    border-top-left-radius: 35px;
+                    border-top-right-radius: 35px;
+                    border-bottom-left-radius: 35px;
+                    border-bottom-right-radius: 35px;
+                    background-color: rgb(255,255,255);
+                "/>
+                <ui:VisualElement name="icone-faixa-j2" style="
+                    width: 70px; height: 14px;
+                    background-color: rgb(200,200,200);
+                    margin-left: -70px;
+                    margin-top: 28px;
+                "/>
             </ui:VisualElement>
 
-            <ui:Button name="trocar-cor-j2" text="Trocar Cor" style="margin-top: 8px; font-size: 14px; padding: 6px 16px;"/>
-            <ui:Button name="confirmar-j2" text="Confirmar" style="margin-top: 8px; font-size: 16px; padding: 8px 24px;"/>
+            <!-- Bolinha -->
+            <ui:Label name="nome-j2" text="Bolinha" style="font-size: 18px; color: white; -unity-font-style: bold;"/>
+            <ui:VisualElement style="flex-direction: row; margin-top: 8px;">
+                <ui:Button name="anterior-j2" text="&lt;" style="font-size: 18px; width: 36px;"/>
+                <ui:Button name="proximo-j2"  text="&gt;" style="font-size: 18px; width: 36px;"/>
+            </ui:VisualElement>
+
+            <!-- Cor do corpo -->
+            <ui:Label name="label-cor-corpo-j2" text="Corpo: Verde" style="font-size: 13px; color: rgb(200,200,200); margin-top: 10px;"/>
+            <ui:VisualElement style="flex-direction: row; margin-top: 4px;">
+                <ui:Button name="corpo-anterior-j2" text="&lt;" style="font-size: 18px; width: 36px;"/>
+                <ui:Button name="corpo-proximo-j2"  text="&gt;" style="font-size: 18px; width: 36px;"/>
+            </ui:VisualElement>
+
+            <!-- Cor da faixa -->
+            <ui:Label name="label-cor-faixa-j2" text="Faixa: Amarelo" style="font-size: 13px; color: rgb(200,200,200); margin-top: 10px;"/>
+            <ui:VisualElement style="flex-direction: row; margin-top: 4px;">
+                <ui:Button name="faixa-anterior-j2" text="&lt;" style="font-size: 18px; width: 36px;"/>
+                <ui:Button name="faixa-proximo-j2"  text="&gt;" style="font-size: 18px; width: 36px;"/>
+            </ui:VisualElement>
+
+            <ui:Button name="confirmar-j2" text="Confirmar" style="margin-top: 14px; font-size: 16px; padding: 8px 24px;"/>
         </ui:VisualElement>
 
     </ui:VisualElement>

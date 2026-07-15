@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d78a618112ff52a4688ff36fabb59f98, type: 3}
   m_Name: BolinhaData 4
   m_EditorClassIdentifier: Assembly-CSharp::BolinhaData
-  nomeBolinha: bolinha
-  corPrimaria: {r: 0.1176471, g: 0.5647059, b: 1, a: 1}
-  corSecundaria: {r: 1, g: 0.9333334, b: 0.5490196, a: 1}
+  nomeBolinha: Bolinha Fantasma
+  velocidade: 8
+  forcaEmpurrao: 8
+  massaBase: 0.5
+  tamanho: 0.8

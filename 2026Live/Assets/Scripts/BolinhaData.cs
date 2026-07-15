@@ -1,14 +1,14 @@
 using UnityEngine;
 
-// Agora é usado só para definir a aparência (cor) da bolinha.
-// Crie 5 assets diferentes (um por opção de cor) via botão direito > Create > Sumo > Bolinha Data.
 [CreateAssetMenu(fileName = "BolinhaData", menuName = "Sumo/Bolinha Data")]
 public class BolinhaData : ScriptableObject
 {
     [Header("Identificação")]
     public string nomeBolinha;
 
-    [Header("Visual")]
-    public Color corPrimaria;
-    public Color corSecundaria;
+    [Header("Stats")]
+    public float velocidade = 6f;
+    public float forcaEmpurrao = 10f;
+    public float massaBase = 1f;
+    public float tamanho = 1f;
 }
