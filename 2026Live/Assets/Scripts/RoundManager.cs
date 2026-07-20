@@ -6,22 +6,25 @@ public class RoundManager : MonoBehaviour
 
     [SerializeField] private Bolinha bolinhaJ1;
     [SerializeField] private Bolinha bolinhaJ2;
-    [SerializeField] private Vector3 spawnJ1 = new Vector3(-3, 0.5f, 0);
-    [SerializeField] private Vector3 spawnJ2 = new Vector3(3, 0.5f, 0);
-    [SerializeField] private float alturaQueda = -5f;
+    [SerializeField] private Vector3 spawnJ1 = new Vector3(-3, 2.5f, 0);
+    [SerializeField] private Vector3 spawnJ2 = new Vector3(3, 2.5f, 0);
+    [SerializeField] private float alturaQueda = -3f;
 
     private int _vitoriasJ1 = 0;
     private int _vitoriasJ2 = 0;
-    private int _roundAtual = 1;
     private bool _roundAtivo = true;
 
-    public static event System.Action<int, int> OnPlacarAtualizado; // vJ1, vJ2
-    public static event System.Action<int> OnRoundFinalizado;       // vencedor (1 ou 2)
-    public static event System.Action<int> OnPartidaFinalizada;     // vencedor (1 ou 2)
+    public static event System.Action<int, int> OnPlacarAtualizado;
+    public static event System.Action<int> OnRoundFinalizado;
 
     void Awake()
     {
-        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
     }
 
@@ -37,7 +40,12 @@ public class RoundManager : MonoBehaviour
 
     void FinalizarRound(int vencedor)
     {
+        // Trava extra contra chamadas duplicadas no mesmo frame/ciclo
+        if (!_roundAtivo) return;
         _roundAtivo = false;
+
+        // Cancela qualquer reset pendente de uma chamada anterior
+        CancelInvoke(nameof(IniciarNovoRound));
 
         if (vencedor == 1) _vitoriasJ1++;
         else _vitoriasJ2++;
@@ -45,10 +53,18 @@ public class RoundManager : MonoBehaviour
         OnPlacarAtualizado?.Invoke(_vitoriasJ1, _vitoriasJ2);
         OnRoundFinalizado?.Invoke(vencedor);
 
+        Debug.Log(
+            $"[RoundManager] Round finalizado! Vencedor: J{vencedor} | Placar: J1={_vitoriasJ1} J2={_vitoriasJ2} | Tempo={Time.time:F2}");
+
         if (_vitoriasJ1 >= 2 || _vitoriasJ2 >= 2)
         {
             int vencedorPartida = _vitoriasJ1 >= 2 ? 1 : 2;
-            OnPartidaFinalizada?.Invoke(vencedorPartida);
+            string nomeBolinha = vencedorPartida == 1
+                ? SumoGameManager.Instance.DadosJ1.nomeBolinha
+                : SumoGameManager.Instance.DadosJ2.nomeBolinha;
+
+            Debug.Log($"[RoundManager] Partida finalizada! Vencedor: J{vencedorPartida} ({nomeBolinha})");
+            SumoGameManager.Instance.DefinirVencedor(vencedorPartida, nomeBolinha);
             SumoGameManager.Instance.IrParaVitoria(vencedorPartida);
             return;
         }
@@ -58,9 +74,11 @@ public class RoundManager : MonoBehaviour
 
     void IniciarNovoRound()
     {
-        _roundAtual++;
         bolinhaJ1.Resetar(spawnJ1);
         bolinhaJ2.Resetar(spawnJ2);
         _roundAtivo = true;
+
+        Debug.Log(
+            $"[RoundManager] Novo round iniciado | J1 pos={bolinhaJ1.transform.position} J2 pos={bolinhaJ2.transform.position} | Tempo={Time.time:F2}");
     }
 }

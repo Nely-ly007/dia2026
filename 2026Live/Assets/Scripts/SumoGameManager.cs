@@ -4,6 +4,13 @@ using System.Collections;
 
 public class SumoGameManager : MonoBehaviour
 {
+    public string NomeBolinhaVencedora { get; private set; }
+
+    public void DefinirVencedor(int vencedor, string nomeBolinha)
+    {
+        VencedorFinal = vencedor;
+        NomeBolinhaVencedora = nomeBolinha;
+    }
     public static SumoGameManager Instance { get; private set; }
 
     private const string SelecaoSceneName  = "SelecaoBolinha";
