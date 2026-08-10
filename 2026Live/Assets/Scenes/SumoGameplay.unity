@@ -487,7 +487,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 764999319}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
@@ -539,7 +539,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 1
   m_LuxAtDistance: 1
@@ -588,63 +588,6 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
---- !u!1001 &927403589
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1267962006411184249, guid: 7fa5cbb793cf74e44a4ee82802fd69e9, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -4.20755
-      objectReference: {fileID: 0}
-    - target: {fileID: 1267962006411184249, guid: 7fa5cbb793cf74e44a4ee82802fd69e9, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.94
-      objectReference: {fileID: 0}
-    - target: {fileID: 1267962006411184249, guid: 7fa5cbb793cf74e44a4ee82802fd69e9, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -4.55134
-      objectReference: {fileID: 0}
-    - target: {fileID: 1267962006411184249, guid: 7fa5cbb793cf74e44a4ee82802fd69e9, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7411994
-      objectReference: {fileID: 0}
-    - target: {fileID: 1267962006411184249, guid: 7fa5cbb793cf74e44a4ee82802fd69e9, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1267962006411184249, guid: 7fa5cbb793cf74e44a4ee82802fd69e9, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1267962006411184249, guid: 7fa5cbb793cf74e44a4ee82802fd69e9, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.671285
-      objectReference: {fileID: 0}
-    - target: {fileID: 1267962006411184249, guid: 7fa5cbb793cf74e44a4ee82802fd69e9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1267962006411184249, guid: 7fa5cbb793cf74e44a4ee82802fd69e9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1267962006411184249, guid: 7fa5cbb793cf74e44a4ee82802fd69e9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: -84.333
-      objectReference: {fileID: 0}
-    - target: {fileID: 3129472580391800500, guid: 7fa5cbb793cf74e44a4ee82802fd69e9, type: 3}
-      propertyPath: m_Name
-      value: Moeda
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 7fa5cbb793cf74e44a4ee82802fd69e9, type: 3}
 --- !u!1 &1035970841
 GameObject:
   m_ObjectHideFlags: 0
@@ -1267,8 +1210,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MoedaSpawner
   moedaPrefab: {fileID: 3129472580391800500, guid: 7fa5cbb793cf74e44a4ee82802fd69e9, type: 3}
   intervaloMin: 0.3
-  intervaloMax: 7
-  areaSpawn: {x: 1, y: 2}
+  intervaloMax: 3
+  areaSpawn: {x: 8, y: 8}
   maxMoedasNaCena: 8
 --- !u!114 &1711129347
 MonoBehaviour:
@@ -1449,4 +1392,3 @@ SceneRoots:
   - {fileID: 2133921603}
   - {fileID: 1711129349}
   - {fileID: 1142791399}
-  - {fileID: 927403589}
